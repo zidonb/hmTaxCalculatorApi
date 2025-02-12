@@ -24,7 +24,7 @@ public class TaxCalculatorEndpoint  {
         return Results.Ok(res);
     }
 
-    public async Task<IResult> ReloadWorkflows(RuleEnginePerYearFactory factory,
+    public static async Task<IResult> ReloadWorkflows(RuleEnginePerYearFactory factory,
             IConfiguration configuration) {
         try {
             // Get the directory path from configuration

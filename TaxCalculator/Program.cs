@@ -1,4 +1,5 @@
-﻿using TaxCalculator.Presentation.Endpoints;
+﻿using TaxCalculator.Infrastructure.Services;
+using TaxCalculator.Presentation.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,8 @@ taxCalculatorGroup.MapPost("/calcTax", async (CalcTaxRequest workFlowInputParams
     .WithName("CalcTax");
 
 // GET: /api/reloadWorkflows
-taxCalculatorGroup.MapGet("/reloadWorkflows", () => Results.StatusCode(501))
+taxCalculatorGroup.MapGet("/reloadWorkflows", async (RuleEnginePerYearFactory factory,
+            IConfiguration configuration) => await TaxCalculatorEndpoint.ReloadWorkflows(factory, configuration)) 
     .WithName("ReloadWorkflows");
 
     
