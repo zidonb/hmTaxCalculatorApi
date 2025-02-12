@@ -1,0 +1,21 @@
+{
+  "WorkflowName": "oilDeduction",
+  "Rules": [
+    {
+      "RuleName": "oilDeduction",
+      "SuccessEvent": "oilDeduction success",
+      "ErrorMessage": "Error calculating oilDeduction",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.OilDeductionSum > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * Input1.OilDeductionSum"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "WorkflowName": "clause46",
+  "GlobalParams": [
+    {
+      "Name": "donationAmount",
+      "Expression": "Input1.donationAmount"
+    },
+    {
+      "Name": "individual",
+      "Expression": "Input1.individual"
+    },
+    {
+      "Name": "totalIncomeAmount",
+      "Expression": "Input1.taxableIncomeNotFromPersonalExertion + Input1.personalExertionIncome"
+    },
+    {
+      "Name": "minimumDonation",
+      "Expression": 190
+    },
+    {
+      "Name": "creditCeiling",
+      "Expression": 9517000
+    }
+  ],
+  "Rules": [
+    {
+
+      "RuleName": "WorkflowEntryCondition",
+      "SuccessEvent": "Is individual",
+      "ErrorMessage": "Error determining if individual",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.individual == true",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "true"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "false"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "DonationCreditCalculation",
+      "Expression": "donationAmount < minimumDonation",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "0"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "CreditCeilingCheck",
+      "Expression": "individual && (donationAmount >= minimumDonation)",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * Math.min(Math.min(creditCeiling, totalIncomeAmount * 0.3), donationAmount) * 0.35"
+          }
+        }
+      }
+    }
+  ]
+    }

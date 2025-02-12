@@ -1,0 +1,62 @@
+{
+  "WorkflowName": "clause45",
+  "GlobalParams": [
+    {
+      "Name": "dependency_1",
+      "Expression": "44"
+    },
+    {
+      "Name": "isResidentOfIsrael",
+      "Expression": "Input1.israeliResident"
+    },
+    {
+      "Name": "creditPointValue",
+      "Expression": -2676
+    },
+    {
+      "Name": "numberOfChildrenWithDisabilities",
+      "Expression": "Input1.numberOfChildrenWithDisabilities"
+    }
+  ],
+  "Rules": [
+    {
+
+      "RuleName": "WorkflowEntryCondition",
+      "SuccessEvent": "Is individual",
+      "ErrorMessage": "Error determining if individual",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.individual == true",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "true"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "false"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Tax credit for a child with a disability",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "isResidentOfIsrael && numberOfChildrenWithDisabilities > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "2 * creditPointValue * numberOfChildrenWithDisabilities"
+          }
+        }
+      }
+    }
+  ]
+}

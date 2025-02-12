@@ -1,0 +1,21 @@
+{
+  "WorkflowName": "handicapedChildren",
+  "Rules": [
+    {
+      "RuleName": "handicapedChildren",
+      "SuccessEvent": "handicapedChildren success",
+      "ErrorMessage": "Error calculating handicapedChildren",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.NumberOfhandicapedChildrens > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * Input1.NumberOfhandicapedChildrens * 5808"
+          }
+        }
+      }
+    }
+  ]
+}

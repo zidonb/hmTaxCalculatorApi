@@ -1,0 +1,22 @@
+{
+  "WorkflowName": "women",
+
+  "Rules": [
+    {
+      "RuleName": "isrealCitizen",
+      "SuccessEvent": "doctorate income tax rate applied",
+      "ErrorMessage": "Error calculating doctorate income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.Gender == 1",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * 0.5 * 2820"
+          }
+        }
+      }
+    }
+  ]
+}

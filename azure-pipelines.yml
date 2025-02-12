@@ -1,0 +1,41 @@
+trigger: none
+   
+variables:
+- group: Jfrog Credentials
+
+pool:
+  name: Hamama-agents
+  demands: 
+  - agent.name -equals hm-dev-build
+  
+jobs:
+- job: Build
+  steps:
+  - task: Docker@2
+    displayName: Build Docker Image
+    inputs:
+      containerRegistry: 'artifactory-docker'
+      repository: 'docker-hamama/test/taxcalculatorapi'
+      command: 'buildAndPush'
+      Dockerfile: '**/Dockerfile'
+      tags: 
+      addPipelineData: false
+      addBaseImageData: false
+  - task: SSH@0
+    displayName: Restart Docker Image
+    inputs:
+      sshEndpoint: 'HM-DEV-APP02 (DEV Server)'
+      runOptions: 'inline'
+      inline: |
+        #!/bin/bash
+                
+        if [ "$(sudo docker ps -q -f name=taxcalculatorapi)" ]; then
+                
+          sudo docker stop taxcalculatorapi
+          sudo docker rm taxcalculatorapi
+        fi
+                
+        sudo docker pull sh-artifactory.sh.shaam.gov.il:8082/docker-hamama/test/taxcalculatorapi:latest
+        sudo docker run -d --name taxcalculatorapi -e ASPNETCORE_ENVIRONMENT=Development -v /opt/hmTaxCalculatorApi/config:/opt/config -p 8085:8080 sh-artifactory.sh.shaam.gov.il:8082/docker-hamama/test/taxcalculatorapi
+      failOnStdErr: false
+      readyTimeout: '0'

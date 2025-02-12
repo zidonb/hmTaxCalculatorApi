@@ -1,0 +1,141 @@
+{
+  "WorkflowName": "clause123",
+  "globalParams": [
+    {
+      "name": "workflowIncome",
+      "expression": "Input1.age>=60?Input1.EarnedIncome+Input1.UnEarnedIncome:Input1.EarnedIncome"
+    },
+    {
+      "name": "dependency_1",
+      "expression": "1211"
+    },
+    {
+      "name": "dependency_2",
+      "expression": "122"
+    },
+    {
+      "name": "type",
+      "expression": "1"
+    }
+  ],
+  "Rules": [
+    {
+      "RuleName": "earnedIncomeTaxBracketsNestedRules",
+      "Operator": "And",
+      "Rules": [
+        {
+          "RuleName": "Degree1",
+          "SuccessEvent": "Degree1 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree1 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "workflowIncome > 0",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "Math.min(84120, workflowIncome) * 0.1"
+              }
+            }
+          }
+        },
+        {
+          "RuleName": "Degree2",
+          "SuccessEvent": "Degree2 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree2 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "workflowIncome > 84120",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "(Math.min(120720, workflowIncome) - 84120) * 0.14"
+              }
+            }
+          }
+        },
+        {
+          "RuleName": "Degree3",
+          "SuccessEvent": "Degree3 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree3 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "workflowIncome > 120720",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "(Math.min(193800, workflowIncome) - 120720) * 0.2"
+              }
+            }
+          }
+        },
+        {
+          "RuleName": "Degree4",
+          "SuccessEvent": "Degree4 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree4 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "workflowIncome > 193800",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "(Math.min(269280, workflowIncome) - 193800) * 0.31"
+              }
+            }
+          }
+        },
+        {
+          "RuleName": "Degree5",
+          "SuccessEvent": "Degree5 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree5 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "workflowIncome > 269280",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "(Math.min(560280, workflowIncome) - 269280) * 0.35"
+              }
+            }
+          }
+        },
+        {
+          "RuleName": "Degree6",
+          "SuccessEvent": "Degree6 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree6 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "workflowIncome > 560280",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "(Math.min(721560, workflowIncome) - 560280) * 0.47"
+              }
+            }
+          }
+        },
+        {
+          "RuleName": "Degree7",
+          "SuccessEvent": "Degree6 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree6 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "workflowIncome > 721560",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "(workflowIncome - 721560) * 0.5"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

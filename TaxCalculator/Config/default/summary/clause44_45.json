@@ -1,0 +1,21 @@
+{
+  "WorkflowName": "clause44_45",
+  "Rules": [
+    {
+      "RuleName": "Check if both values are greater than 0",
+      "SuccessEvent": "Values Validated",
+      "ErrorMessage": "Either valueFromClause44 or valueFromClause45 is not greater than 0",
+      "ErrorType": "ValidationError",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.ContainsKey(\"clause44\") && Input1.ContainsKey(\"clause45\")",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "Input1[\"clause44\"] != 0 ? Input1[\"clause44\"] : Input1[\"clause45\"]"
+          }
+        }
+      }
+    }
+  ]
+}

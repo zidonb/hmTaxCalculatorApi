@@ -1,0 +1,178 @@
+{
+  "WorkflowName": "clause45A",
+  "GlobalParams": [
+    {
+      "Name": "lifeInsurencePayments",
+      "Expression": "Input1.lifeInsurence"
+    },
+    {
+      "Name": "pensionInsuranceEmployedDeposit",
+      "Expression": "Input1.pensionInsuranceEmployedDeposit"
+    },
+    {
+      "Name": "pensionInsuranceSelfEmployedDeposit",
+      "Expression": "Input1.pensionInsuranceSelfEmployedDeposit"
+    },
+    {
+      "Name": "pensionInsuranceFromEmployerDeposit",
+      "Expression": "Input1.pensionInsuranceFromEmployerDeposit"
+    },
+    {
+      "Name": "survivorPensionInsurance",
+      "Expression": "Input1.survivorPensionInsurance"
+    },
+    {
+      "Name": "personalExertionIncome",
+      "Expression": "Input1.personalExertionIncome"
+    },
+    {
+      "Name": "taxableIncomeNotFromPersonalExertion",
+      "Expression": "Input1.taxableIncomeNotFromPersonalExertion"
+    },
+    {
+      "Name": "insuredIncome",
+      "Expression": "Input1.insuredIncome"
+    },
+    {
+      "Name": "israeliResident",
+      "Expression": "Input1.israeliResident"
+    },
+    {
+      "Name": "preferredMember",
+      "Expression": "(pensionInsuranceEmployedDeposit  + pensionInsuranceSelfEmployedDeposit) > (1688 * 12)"
+    },
+    {
+      "Name": "pensionPayments",
+      "Expression": "pensionInsuranceEmployedDeposit + pensionInsuranceSelfEmployedDeposit + survivorPensionInsurance"
+    },
+    {
+      "Name": "InitialCredit",
+      "Expression": "(lifeInsurencePayments* 0.25) + (pensionPayments * 0.35)"
+    },
+    {
+      "Name": "wrdInsuranceEmployedDeposit",
+      "Expression": "Input1.wrdInsuranceEmployedDeposit"
+    },
+    {
+      "Name": "qualifyingIncomeLimit",
+      "Expression": 106800
+    },
+    {
+      "Name": "nonQualifyingIncomeLimit",
+      "Expression": 151200
+    },
+    {
+      "Name": "IsMezakaForOnlyExertionIncome",
+      "Expression": "personalExertionIncome > 0 && taxableIncomeNotFromPersonalExertion == 0"
+    },
+    {
+      "Name": "IsMezakaForOnlyNotExertionIncome",
+      "Expression": "personalExertionIncome == 0 && taxableIncomeNotFromPersonalExertion > 0"
+    },
+    {
+      "Name": "MezakaForOnlyExertionIncome",
+      "Expression": "Math.min(personalExertionIncome, qualifyingIncomeLimit)"
+    },
+    {
+      "Name": "MezakaForOnlyNotExertionIncome",
+      "Expression": "Math.min(taxableIncomeNotFromPersonalExertion, nonQualifyingIncomeLimit)"
+    },
+    {
+      "Name": "MazakaForBoth",
+      "Expression": "MezakaForOnlyExertionIncome + (Math.min(taxableIncomeNotFromPersonalExertion, (nonQualifyingIncomeLimit - MezakaForOnlyExertionIncome)))"
+    },
+    {
+      "Name": "MezakaIncome",
+      "Expression": "IsMezakaForOnlyExertionIncome ? MezakaForOnlyExertionIncome : IsMezakaForOnlyNotExertionIncome ? MezakaForOnlyNotExertionIncome : MazakaForBoth"
+    }
+  ],
+  "Rules": [
+    {
+
+      "RuleName": "WorkflowEntryCondition",
+      "SuccessEvent": "Is individual",
+      "ErrorMessage": "Error determining if individual",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.individual == true",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "true"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "false"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Credit limit for non-preferred members [45A_D_2_b_1]",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "!preferredMember && personalExertionIncome == 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(-1 * Math.Min(InitialCredit,  Math.Max(2112 ,Math.Min(InitialCredit, 0.35 * 0.05 * Math.Min(MezakaIncome, personalExertionIncome + taxableIncomeNotFromPersonalExertion)))))"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Credit limit for preferred members [45A_D_2_b_2]",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "!preferredMember && personalExertionIncome > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(-1 * Math.Min(InitialCredit, (Math.Max(2112 ,Math.Min(InitialCredit, 0.35 * 0.07 * Math.Min(MezakaIncome, personalExertionIncome + taxableIncomeNotFromPersonalExertion))))))"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Credit limit for non-preferred members [45A_E_2_b_1]",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "preferredMember && insuredIncome == 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(-1 * Math.Min(InitialCredit, Math.Max(2112 ,Math.Min(InitialCredit, 0.35 * 0.05 * Math.Min(MezakaIncome * 2, personalExertionIncome + taxableIncomeNotFromPersonalExertion)))))"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Credit limit for preferred members [45A_E_2_b_2]",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "preferredMember && insuredIncome > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(-1 * Math.Min(InitialCredit, Math.Max(2112 ,Math.Min(InitialCredit, 0.35 * 0.07 * Math.Min(MezakaIncome, insuredIncome)) + (0.05 * (Math.min((personalExertionIncome + taxableIncomeNotFromPersonalExertion - insuredIncome), MezakaIncome * 2))))))"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "WorkflowName": "doctorate",
+
+  "Rules": [
+    {
+      "RuleName": "doctorate",
+      "SuccessEvent": "doctorate income tax rate applied",
+      "ErrorMessage": "Error calculating doctorate income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "input1.FinishDoctorate == true",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * 0.5 * 2820"
+          }
+        }
+      }
+    }
+  ]
+}

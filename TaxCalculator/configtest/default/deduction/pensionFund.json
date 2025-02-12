@@ -1,0 +1,21 @@
+{
+  "WorkflowName": "pensionFund",
+  "Rules": [
+    {
+      "RuleName": "Degree1",
+      "SuccessEvent": "Degree1 income tax rate applied",
+      "ErrorMessage": "Error calculating Degree1 income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.PensionSum > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * Math.Min(8148, Math.Min((Input1.EarnedIncome + Input1.EarnedIncome) * 0.07, Input1.PensionSum)) * 0.35"
+          }
+        }
+      }
+    }
+  ]
+}

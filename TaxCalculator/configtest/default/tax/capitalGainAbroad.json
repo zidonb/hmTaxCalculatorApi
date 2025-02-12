@@ -1,0 +1,77 @@
+{
+  "WorkflowName": "capitalGainsAbroad",
+  "Rules": [
+    {
+      "RuleName": "capitalGainsTaxBenefitNestedRules",
+      "Operator": "And",
+      "Rules": [
+        {
+          "RuleName": "AdditionalRule",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "!(input1.age < 60 || input1.CapitalGainsAbroad > 193800)",
+          "Actions": {
+            "OnFailure": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "input1.CapitalGainsAbroad * 0.25 - Input1.CapitalGainsAbroadPaidTax"
+              }
+            }
+          }
+        },
+        {
+          "RuleName": "workFlowContinue",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "Input1.age>=60"
+        },
+        {
+          "RuleName": "Degree1",
+          "SuccessEvent": "Degree1 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree1 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "Input1.CapitalGainsAbroad > 0",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "Math.min(84120, Input1.CapitalGainsAbroad) * 0.1 - Input1.CapitalGainsAbroadPaidTax"
+              }
+            }
+          }
+        },
+        {
+          "RuleName": "Degree2",
+          "SuccessEvent": "Degree2 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree2 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "Input1.CapitalGainsAbroad > 84120",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "(Math.min(120720, Input1.CapitalGainsAbroad) - 84120) * 0.14 - Input1.CapitalGainsAbroadPaidTax"
+              }
+            }
+          }
+        },
+        {
+          "RuleName": "Degree3",
+          "SuccessEvent": "Degree3 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree3 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "Input1.CapitalGainsAbroad > 120720",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "(Math.min(193800, Input1.CapitalGainsAbroad) - 120720) * 0.2 - Input1.CapitalGainsAbroadPaidTax"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

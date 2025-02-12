@@ -1,0 +1,190 @@
+{
+  "WorkflowName": "clause66_C_4_and_5",
+  "GlobalParams": [
+    {
+      "Name": "creditPointValue",
+      "Expression": "-2676"
+    },
+    {
+      "Name": "IsWoman",
+      "Expression": "Input1.IsWoman"
+    },
+    {
+      "Name": "childrensData",
+      "Expression": "Input1.childrensData"
+    },
+    {
+      "Name": "numberOfChildren_0_1",
+      "Expression": "Convert.ToInt32(Input1.childrensData.Substring(11, 2))"
+    },
+    {
+      "Name": "numberOfChildren_1_5",
+      "Expression": "Convert.ToInt32(Input1.childrensData.Substring(9, 2))"
+    },
+    {
+      "Name": "numberOfChildren_6_12",
+      "Expression": "Convert.ToInt32(Input1.childrensData.Substring(7, 2))"
+    },
+    {
+      "Name": "numberOfChildren_13_17",
+      "Expression": "Convert.ToInt32(Input1.childrensData.Substring(5, 2))"
+    },
+    {
+      "Name": "numberOfChildren_18",
+      "Expression": "Convert.ToInt32(Input1.childrensData.Substring(3, 2))"
+    }
+  ],
+  "Rules": [
+    {
+
+      "RuleName": "WorkflowEntryCondition",
+      "SuccessEvent": "Is individual",
+      "ErrorMessage": "Error determining if individual",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.individual == true",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "true"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "false"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Mother's tax credit for child in year of birth [1A]",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "IsWoman && numberOfChildren_0_1 > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "1.5 * creditPointValue * numberOfChildren_0_1"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Mother's tax credit for child in year of maturity [1A]",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "IsWoman && numberOfChildren_18 > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "0.5 * creditPointValue * numberOfChildren_18"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Mother's tax credit for child between birth and maturity [1B]",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "IsWoman && (numberOfChildren_1_5 + numberOfChildren_6_12 + numberOfChildren_13_17) > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "1 * creditPointValue * (numberOfChildren_1_5 + numberOfChildren_6_12 + numberOfChildren_13_17)"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Mother's additional credit for young children (1-5) [1C]",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "IsWoman && numberOfChildren_1_5 > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "1.5 * creditPointValue * numberOfChildren_1_5"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Mother's additional credit for children under (6-12) [1D]",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "IsWoman && numberOfChildren_6_12 > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "1 * creditPointValue * numberOfChildren_6_12"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Father's tax credit for infant in year of birth [2A]",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "!IsWoman && numberOfChildren_0_1 > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "1.5 * creditPointValue * numberOfChildren_0_1"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Father's tax credit for young children (1-5) [2B]",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "!IsWoman && numberOfChildren_1_5 > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "2.5 * creditPointValue * numberOfChildren_1_5"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Father's additional credit for children under 13 (6 - 12) [2C]",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "!IsWoman && numberOfChildren_6_12 > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "1 * creditPointValue * numberOfChildren_6_12"
+          }
+        }
+      }
+    }
+  ]
+}

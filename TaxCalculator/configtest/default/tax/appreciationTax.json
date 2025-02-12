@@ -1,0 +1,101 @@
+{
+  "WorkflowName": "appreciationTax",
+  "Rules": [
+    {
+      "RuleName": "profiteAfterDateNotFixed",
+      "SuccessEvent": "profiteAfterDateNotFixed success",
+      "ErrorMessage": "Error calculating profiteAfterDateNotFixed",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.profiteAfterDateNotFixed > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "0.25 * Input1.profiteAfterDateNotFixed"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "profiteBeforeDateNotFixed",
+      "SuccessEvent": "profiteBeforeDateNotFixed success",
+      "ErrorMessage": "Error calculating profiteBeforeDateNotFixed",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.profiteBeforeDateNotFixed > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "0.2 * Input1.profiteBeforeDateNotFixed"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "profiteBeforeDateFixedDegree1",
+      "SuccessEvent": "profiteBeforeDateFixedDegree1 success",
+      "ErrorMessage": "Error calculating profiteBeforeDateFixedDegree1",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.profiteBeforeDateFixed > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "Math.Min(238800, Input1.profiteBeforeDateFixed) * 0.31"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "profiteBeforeDateFixedDegree2",
+      "SuccessEvent": "profiteBeforeDateFixedDegree2 success",
+      "ErrorMessage": "Error calculating profiteBeforeDateFixedDegree2",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.profiteBeforeDateFixed > 238800",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(Math.Min(Input1.profiteBeforeDateFixed, 496920) - 238800) * 0.35"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "profiteBeforeDateFixedDegree3",
+      "SuccessEvent": "profiteBeforeDateFixedDegree3 success",
+      "ErrorMessage": "Error calculating profiteBeforeDateFixedDegree3",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.profiteBeforeDateFixed > 496920",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(Input1.profiteBeforeDateFixed - 496920) * 0.47"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "profiteInflationary",
+      "SuccessEvent": "profiteInflationary success",
+      "ErrorMessage": "Error calculating profiteInflationary",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.profiteInflationary > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "profiteInflationary * 0.1"
+          }
+        }
+      }
+    }
+  ]
+}

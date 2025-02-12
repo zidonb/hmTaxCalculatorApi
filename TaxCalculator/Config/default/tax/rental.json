@@ -1,0 +1,55 @@
+{
+  "WorkflowName": "company_rental",
+  "GlobalParams": [
+
+    {
+      "Name": "rentalIncome",
+      "Expression": "Input1.rentalIncome"
+    },
+    {
+      "Name": "applicableRate",
+      "Expression": "Input1.applicableRate"
+    }
+  ],
+  "Rules": [
+    {
+
+      "RuleName": "WorkflowEntryCondition",
+      "SuccessEvent": "Is individual",
+      "ErrorMessage": "Error determining if individual",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.individual == false",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "true"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "false"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Asset Tax",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in tax calculation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "rentalIncome > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(rentalIncome * applicableRate)/100"
+          }
+        }
+      }
+    }
+  ]
+}

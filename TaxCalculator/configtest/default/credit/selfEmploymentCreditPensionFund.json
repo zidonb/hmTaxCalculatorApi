@@ -1,0 +1,27 @@
+{
+  "WorkflowName": "selfEmploymentCreditPensionFund",
+  "Rules": [
+    {
+      "RuleName": "selfEmploymentCreditPensionFund",
+      "SuccessEvent": "selfEmploymentCreditPensionFund  income tax rate applied",
+      "ErrorMessage": "Error calculating selfEmploymentCreditPensionFund income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.SelfEmploymentPension > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * (Input1.SelfEmploymentPension > 24069.11 ? Math.Min(11640, 0.055 * Input1.SelfEmploymentPension) : Math.Min(16440, 0.055 * Input1.SelfEmploymentPension))"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "0"
+          }
+        }
+      }
+    }
+  ]
+}

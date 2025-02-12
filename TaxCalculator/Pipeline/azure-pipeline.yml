@@ -1,0 +1,28 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+# Don't change this file!
+
+
+pool:
+  name: LinuxBuildPool
+
+variables:
+ project-name: $[lower(variables['Build.DefinitionName'])]
+
+
+resources:
+ repositories:
+   - repository: devops_templates 
+     name: devops_templates   
+     project: DevOps
+     ref: master
+     type: git
+steps:
+  - template: pipelines-templates/api-dotnet-helm-pipeline.yml@devops_templates
+    parameters:
+      project-name: $(project-name)
+#      solution: $(build.SourcesDirectory)\XXX.sln
+  

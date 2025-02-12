@@ -1,0 +1,54 @@
+﻿{
+  "WorkflowName": "clause126",
+  "GlobalParams": [
+    {
+      "Name": "corporateTaxableIncome",
+      "Expression": "Input1.corporateTaxableIncome"
+    },
+    {
+      "Name": "corporateTaxRate",
+      "Expression": 0.23
+    }
+  ],
+  "Rules": [
+    {
+
+      "RuleName": "WorkflowEntryCondition",
+      "SuccessEvent": "Is individual",
+      "ErrorMessage": "Error determining if individual",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.individual == false",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "true"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "false"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Corporate Tax",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in tax calculation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": " corporateTaxableIncome > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "corporateTaxableIncome * corporateTaxRate"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Version>1.0.0</Version>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="dotnet tool restore" />
+	</Target>
+
+	<ItemGroup>
+		<Compile Remove=".config\**" />
+		<Compile Remove=".template.config\**" />
+		<Compile Remove="Application\Interfaces\Services\**" />
+		<Compile Remove="Application\Pipeline\**" />
+		<Compile Remove="Application\Validations\NewFolder\**" />
+		<Compile Remove="Application\Validations\Request\Sample\**" />
+		<Compile Remove="configtest\**" />
+		<Compile Remove="Domain\Entities\Filters\**" />
+		<Content Remove=".config\**" />
+		<Content Remove=".template.config\**" />
+		<Content Remove="Application\Interfaces\Services\**" />
+		<Content Remove="Application\Pipeline\**" />
+		<Content Remove="Application\Validations\NewFolder\**" />
+		<Content Remove="Application\Validations\Request\Sample\**" />
+		<Content Remove="configtest\**" />
+		<Content Remove="Domain\Entities\Filters\**" />
+		<EmbeddedResource Remove=".config\**" />
+		<EmbeddedResource Remove=".template.config\**" />
+		<EmbeddedResource Remove="Application\Interfaces\Services\**" />
+		<EmbeddedResource Remove="Application\Pipeline\**" />
+		<EmbeddedResource Remove="Application\Validations\NewFolder\**" />
+		<EmbeddedResource Remove="Application\Validations\Request\Sample\**" />
+		<EmbeddedResource Remove="configtest\**" />
+		<EmbeddedResource Remove="Domain\Entities\Filters\**" />
+		<None Remove=".config\**" />
+		<None Remove=".template.config\**" />
+		<None Remove="Application\Interfaces\Services\**" />
+		<None Remove="Application\Pipeline\**" />
+		<None Remove="Application\Validations\NewFolder\**" />
+		<None Remove="Application\Validations\Request\Sample\**" />
+		<None Remove="configtest\**" />
+		<None Remove="Domain\Entities\Filters\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Domain\Interfaces\IUnitOfWork.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Codding rules.docx" />
+	  <None Remove="rename-before-dot.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Config\default\tax\clause126.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
+		<PackageReference Include="Dapper" Version="2.1.21" />
+		<PackageReference Include="FluentValidation" Version="11.9.0" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="8.0.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+		<PackageReference Include="Moq" Version="4.20.69" />
+		<PackageReference Include="RulesEngine" Version="5.0.3" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Application\Mapping\NewFolder\" />
+		<Folder Include="Application\Request\CalcTax\" />
+		<Folder Include="Config\2022\tax\" />
+		<Folder Include="Config\2023\credit\" />
+		<Folder Include="Config\2023\deduction\" />
+		<Folder Include="Config\2023\tax\" />
+		<Folder Include="Config\2024\credit\" />
+		<Folder Include="Config\2024\tax\" />
+		<Folder Include="Config\default\credit\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="globalParametersDB.csv">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Pipeline\ConS\Prod\.env">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Pipeline\ConS\QA\.env">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Pipeline\ConS\Staging\.env">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Pipeline\ConS\Test\.env">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+		<None Update="config\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EditorConfigFiles Update="C:\inetpub\wwwroot\ProjectTemplates\TaxCalculator\templates\TaxCalculator\TaxCalculator\.editorconfig">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EditorConfigFiles>
+	</ItemGroup>
+
+</Project>

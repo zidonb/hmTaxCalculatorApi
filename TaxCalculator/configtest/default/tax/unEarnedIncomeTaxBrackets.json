@@ -1,0 +1,80 @@
+{
+  "WorkflowName": "unEarnedIncomeTaxBrackets",
+  "Rules": [
+    {
+      "RuleName": "unEarnedIncomeTaxBracketsNestedRules",
+      "Operator": "And",
+      "Rules": [
+        {
+          "RuleName": "workFlowContinue",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "Input1.age<60"
+        },
+        {
+          "RuleName": "Degree1",
+          "SuccessEvent": "Degree1 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree1 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "Input1.UnEarnedIncome > 0",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "Math.min(269280, Input1.UnEarnedIncome) * 0.31"
+              }
+            }
+          }
+        },
+        {
+          "RuleName": "Degree2",
+          "SuccessEvent": "Degree2 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree2 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "Input1.UnEarnedIncome > 269280",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "(Math.min(560280, Input1.UnEarnedIncome) - 269280) * 0.35"
+              }
+            }
+          }
+        },
+        {
+          "RuleName": "Degree3",
+          "SuccessEvent": "Degree3 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree3 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "Input1.UnEarnedIncome > 560280",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "(Math.min(721560, Input1.UnEarnedIncome) - 560280) * 0.47"
+              }
+            }
+          }
+        },
+        {
+          "RuleName": "Degree4",
+          "SuccessEvent": "Degree4 income tax rate applied",
+          "ErrorMessage": "Error calculating Degree4 income tax",
+          "ErrorType": "Error",
+          "RuleExpressionType": "LambdaExpression",
+          "Expression": "Input1.UnEarnedIncome > 721560",
+          "Actions": {
+            "OnSuccess": {
+              "Name": "OutputExpression",
+              "Context": {
+                "Expression": "(Input1.UnEarnedIncome - 721560) * 0.5"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+    }

@@ -1,0 +1,286 @@
+{
+    "WorkflowName": "clause121",
+    "GlobalParams": [
+      {
+        "Name": "taxableIncomeNotFromPersonalExertion",
+        "Expression": "Input1.taxableIncomeNotFromPersonalExertion"
+      },
+      {
+        "Name": "individualAge",
+        "Expression": "Input1.individualAge"
+      },
+      {
+        "Name": "personalExertionIncome",
+        "Expression": "Input1.personalExertionIncome"
+      },
+      {
+        "Name": "properAccountingBooks",
+        "Expression": "Input1.properAccountingBooks"
+      }
+    ],
+  "Rules": [
+    {
+
+      "RuleName": "WorkflowEntryCondition",
+      "SuccessEvent": "Is individual",
+      "ErrorMessage": "Error determining if individual",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.individual == true",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "true"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "false"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket1_non_exertion_under_60",
+      "SuccessEvent": "Bracket 1 Non-Exertion Under 60 Applied",
+      "ErrorMessage": "Error in Bracket 1 Non-Exertion Under 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge < 60 && taxableIncomeNotFromPersonalExertion > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "Math.min(247440, taxableIncomeNotFromPersonalExertion) * 0.31"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket2_non_exertion_under_60",
+      "SuccessEvent": "Bracket 2 Non-Exertion Under 60 Applied",
+      "ErrorMessage": "Error in Bracket 2 Non-Exertion Under 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge < 60 && taxableIncomeNotFromPersonalExertion > 247440",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(Math.min(514920, taxableIncomeNotFromPersonalExertion) - 247440) * 0.35"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket3_non_exertion_under_60",
+      "SuccessEvent": "Bracket 3 Non-Exertion Under 60 Applied",
+      "ErrorMessage": "Error in Bracket 3 Non-Exertion Under 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge < 60 && taxableIncomeNotFromPersonalExertion > 514920",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(taxableIncomeNotFromPersonalExertion - 514920) * 0.47"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket1_exertion_under_60",
+      "SuccessEvent": "Bracket 1 Exertion Under 60 Applied",
+      "ErrorMessage": "Error in Bracket 1 Exertion Under 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge < 60 && personalExertionIncome > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "Math.min(77400, personalExertionIncome) * 0.1"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket2_exertion_under_60",
+      "SuccessEvent": "Bracket 2 Exertion Under 60 Applied",
+      "ErrorMessage": "Error in Bracket 2 Exertion Under 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge < 60 && personalExertionIncome > 77400",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(Math.min(110880, personalExertionIncome) - 77400) * 0.14"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket3_exertion_under_60",
+      "SuccessEvent": "Bracket 3 Exertion Under 60 Applied",
+      "ErrorMessage": "Error in Bracket 3 Exertion Under 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge < 60 && personalExertionIncome > 110880",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(Math.min(178080, personalExertionIncome) - 110880) * 0.20"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket4_exertion_under_60",
+      "SuccessEvent": "Bracket 4 Exertion Under 60 Applied",
+      "ErrorMessage": "Error in Bracket 4 Exertion Under 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge < 60 && personalExertionIncome > 178080",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(Math.min(247440, personalExertionIncome) - 178080) * 0.31"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket5_exertion_under_60",
+      "SuccessEvent": "Bracket 5 Exertion Under 60 Applied",
+      "ErrorMessage": "Error in Bracket 5 Exertion Under 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge < 60 && personalExertionIncome > 247440",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(Math.min(514920, personalExertionIncome) - 247440) * 0.35"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket6_exertion_under_60",
+      "SuccessEvent": "Bracket 6 Exertion Under 60 Applied",
+      "ErrorMessage": "Error in Bracket 6 Exertion Under 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge < 60 && personalExertionIncome > 514920",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(personalExertionIncome - 514920) * 0.47"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket1_over_60",
+      "SuccessEvent": "Bracket 1 Over 60 Applied",
+      "ErrorMessage": "Error in Bracket 1 Over 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge >= 60 && taxableIncomeNotFromPersonalExertion + personalExertionIncome > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "Math.min(77400, taxableIncomeNotFromPersonalExertion + personalExertionIncome) * 0.1"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket2_over_60",
+      "SuccessEvent": "Bracket 2 Over 60 Applied",
+      "ErrorMessage": "Error in Bracket 2 Over 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge >= 60 && taxableIncomeNotFromPersonalExertion + personalExertionIncome > 77400",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(Math.min(110880, taxableIncomeNotFromPersonalExertion + personalExertionIncome) - 77400) * 0.14"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket3_over_60",
+      "SuccessEvent": "Bracket 3 Over 60 Applied",
+      "ErrorMessage": "Error in Bracket 3 Over 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge >= 60 && taxableIncomeNotFromPersonalExertion + personalExertionIncome > 110880",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(Math.min(178080, taxableIncomeNotFromPersonalExertion + personalExertionIncome) - 110880) * 0.20"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket4_over_60",
+      "SuccessEvent": "Bracket 4 Over 60 Applied",
+      "ErrorMessage": "Error in Bracket 4 Over 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge >= 60 && taxableIncomeNotFromPersonalExertion + personalExertionIncome > 178080",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(Math.min(247440, taxableIncomeNotFromPersonalExertion + personalExertionIncome) - 178080) * 0.31"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket5_over_60",
+      "SuccessEvent": "Bracket 5 Over 60 Applied",
+      "ErrorMessage": "Error in Bracket 5 Over 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge >= 60 && taxableIncomeNotFromPersonalExertion + personalExertionIncome > 247440",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(Math.min(514920, taxableIncomeNotFromPersonalExertion + personalExertionIncome) - 247440) * 0.35"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Bracket6_over_60",
+      "SuccessEvent": "Bracket 6 Over 60 Applied",
+      "ErrorMessage": "Error in Bracket 6 Over 60",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "individualAge >= 60 && taxableIncomeNotFromPersonalExertion + personalExertionIncome > 514920",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(taxableIncomeNotFromPersonalExertion + personalExertionIncome - 514920) * 0.47"
+          }
+        }
+      }
+    }
+  ]
+  }

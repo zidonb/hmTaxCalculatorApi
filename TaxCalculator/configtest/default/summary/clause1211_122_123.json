@@ -1,0 +1,21 @@
+{
+  "WorkflowName": "clause1211_122_123",
+  "Rules": [
+    {
+      "RuleName": "Degree2",
+      "SuccessEvent": "Degree2 income tax rate applied",
+      "ErrorMessage": "Error calculating Degree2 income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.ContainsKey(\"clause1211\") && Input1.ContainsKey(\"clause122\") && Input1.ContainsKey(\"clause123\")",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "Math.Min(Input1[\"clause1211\"], Math.Min(Input1[\"clause122\"], Input1[\"clause123\"]))"
+          }
+        }
+      }
+    }
+  ]
+}

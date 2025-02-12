@@ -1,0 +1,57 @@
+{
+  "WorkflowName": "clause36A",
+  "GlobalParams": [
+    {
+      "Name": "IsWoman",
+      "Expression": "Input1.IsWoman"
+    },
+    {
+      "Name": "creditPointValue",
+      "Expression": "-2676"
+    }
+  ],
+  "Rules": [
+
+    {
+
+      "RuleName": "WorkflowEntryCondition",
+      "SuccessEvent": "Is individual",
+      "ErrorMessage": "Error determining if individual",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.individual == true",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "true"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "false"
+          }
+        }
+      }
+    },
+
+    {
+
+      "RuleName": "WomanCreditPoint",
+      "SuccessEvent": "Women's tax credit applied",
+      "ErrorMessage": "Error applying women's tax credit",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "IsWoman == true",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "0.5 *creditPointValue"
+          }
+        }
+      }
+    }
+  ]
+}

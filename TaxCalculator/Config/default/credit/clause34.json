@@ -1,0 +1,60 @@
+{
+  "WorkflowName": "clause34",
+  "GlobalParams": [
+    {
+      "Name": "israeliResident",
+      "Expression": "Input1.israeliResident"
+    },
+    {
+      "Name": "creditPointValue",
+      "Expression": "-2676"
+    }
+  ],
+  "Rules": [
+    {
+
+      "RuleName": "WorkflowEntryCondition",
+      "SuccessEvent": "Is individual",
+      "ErrorMessage": "Error determining if individual",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.individual == true",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "true"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "false"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "IsIndividualIsraeliResident",
+      "SuccessEvent": "Individual is an Israeli resident",
+      "ErrorMessage": "Error determining if individual is an Israeli resident",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "israeliResident == true",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "2 * creditPointValue"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "0"
+          }
+        }
+      }
+    }
+  ]
+}

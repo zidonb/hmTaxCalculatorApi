@@ -1,0 +1,27 @@
+{
+  "WorkflowName": "selfEmploymentDeductionPensionFund",
+  "Rules": [
+    {
+      "RuleName": "Degree1",
+      "SuccessEvent": "Degree1 income tax rate applied",
+      "ErrorMessage": "Error calculating Degree1 income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.SelfEmploymentPension > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * Math.Min(Math.Min(25608, 0.11 * Input1.SelfEmploymentIncome), Input1.SelfEmploymentPension)"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "0"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "GlobalParams": [
+    {
+      "Name": "IsWoman",
+      "Expression": "Input1.IsWoman"
+    },
+    {
+      "Name": "regularServiceMonths",
+      "Expression": "Input1.regularServiceMonths"
+    },
+    {
+      "Name": "creditPointValue",
+      "Expression": -2676
+    },
+    {
+      "Name": "currentDate",
+      "Expression": "\"122022\""
+    },
+    {
+      "Name": "EndOfMilitaryServiceDate",
+      "Expression": "Input1.EndOfMilitaryServiceDate"
+    },
+    {
+      "Name": "CalculateMonthDifference",
+      "Expression": "Math.Abs((int.Parse(currentDate.Substring(currentDate.Length - 4)) - int.Parse(EndOfMilitaryServiceDate.Substring(EndOfMilitaryServiceDate.Length - 4))) * 12 + (int.Parse(currentDate.Substring(0, currentDate.Length - 4)) - int.Parse(EndOfMilitaryServiceDate.Substring(0, currentDate.Length - 4))))"
+    },
+    {
+      "Name": "ActualMonthsForCredit",
+      "Expression": "(CalculateMonthDifference > 36 && CalculateMonthDifference <= 48) ? (48 - CalculateMonthDifference) : (CalculateMonthDifference > 48 || CalculateMonthDifference <= 0) ? 0 : CalculateMonthDifference > 12 ? 12 : (CalculateMonthDifference < 12 && CalculateMonthDifference > 0) ? CalculateMonthDifference : 0 "
+    }
+  ],
+  "WorkflowName": "clause39A",
+  "Rules": [
+    {
+
+      "RuleName": "WorkflowEntryCondition",
+      "SuccessEvent": "Is individual",
+      "ErrorMessage": "Error determining if individual",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.individual == true",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "true"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "false"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Full service for male",
+      "SuccessEvent": "Success",
+      "ErrorMessage": "Error",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "(!IsWoman && regularServiceMonths >= 23 && ActualMonthsForCredit != 0)",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(1.0/6.0) * creditPointValue * ActualMonthsForCredit"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Full service for female",
+      "SuccessEvent": "Success",
+      "ErrorMessage": "Error",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "(IsWoman && regularServiceMonths >= 22 && ActualMonthsForCredit != 0)",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(1.0/6.0) * creditPointValue * ActualMonthsForCredit"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Partial service for male",
+      "SuccessEvent": "Success",
+      "ErrorMessage": "Error",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "(!IsWoman && regularServiceMonths < 23 && ActualMonthsForCredit != 0)",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(1.0/12.0) * creditPointValue * ActualMonthsForCredit"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Partial service for female",
+      "SuccessEvent": "Success",
+      "ErrorMessage": "Error",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "(IsWoman && regularServiceMonths < 22 && ActualMonthsForCredit != 0)",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "(1.0/12.0) * creditPointValue * ActualMonthsForCredit"
+          }
+        }
+      }
+    }
+  ]
+}

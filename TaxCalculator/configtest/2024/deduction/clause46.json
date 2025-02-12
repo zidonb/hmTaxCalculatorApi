@@ -1,0 +1,40 @@
+{
+  "WorkflowName": "clause46",
+  "GlobalParams": [
+    {
+      "Name": "DonationThreshold",
+      "Expression": "CsvUtilities.GetFromCsv(\"DonationThreshold\")"
+    },
+    {
+      "Name": "TotalIncome",
+      "Expression": "Input1.EarnedIncome + Input1.UnEarnedIncome + Input1.CapitalGainsIsrael + Input1.CapitalGainsAbroad"
+    }
+  ],
+  "Rules": [
+    {
+      "RuleName": "isApplied",
+      "SuccessEvent": "Degree1 income tax rate applied",
+      "ErrorMessage": "Error calculating Degree1 income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.TotalDonations < DonationThreshold"
+    },
+    {
+      "RuleName": "Degree2",
+      "SuccessEvent": "Degree2 income tax rate applied",
+      "ErrorMessage": "Error calculating Degree2 income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.TotalDonations >= DonationThreshold",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * Math.min(Math.min(10354816, TotalIncome * 0.3), Input1.TotalDonations) * 0.35"
+          }
+        }
+      }
+    }
+  ]
+}
+

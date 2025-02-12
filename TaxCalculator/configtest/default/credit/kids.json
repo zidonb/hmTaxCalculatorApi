@@ -1,0 +1,111 @@
+{
+  "WorkflowName": "kids",
+  "globalParams": [
+    {
+      "name": "credit",
+      "expression": "2820"
+    }
+
+  ],
+
+  "Rules": [
+    {
+      "RuleName": "credit1",
+      "SuccessEvent": "credit1 income tax rate applied",
+      "ErrorMessage": "Error calculating credit1 income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "(Input1.KidsAge0 > 0 || Input1.KidsAge1to5 > 0 || Input1.KidsAge6to12 > 0 || Input1.KidsAge13to17 > 0 || Input1.KidsAge18 > 0)  && input1.Gender == 1",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * credit * (Input1.KidsAge0 + Input1.KidsAge1to5 + Input1.KidsAge6to12 + Input1.KidsAge13to17 + Input1.KidsAge18)"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "credit1.5",
+      "SuccessEvent": "credit1.5 income tax rate applied",
+      "ErrorMessage": "Error calculating credit1.5 income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.KidsAge0 > 0 ",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * 1.5 * credit * Input1.KidsAge0"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "credit2.5",
+      "SuccessEvent": "credit2.5 income tax rate applied",
+      "ErrorMessage": "Error calculating credit2.5 income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.KidsAge1to5 > 0 ",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * 2.5 * credit * Input1.KidsAge1to5"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "credit2",
+      "SuccessEvent": "credit2 income tax rate applied",
+      "ErrorMessage": "Error calculating credit2 income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.KidsAge6to12 > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * credit * Input1.KidsAge6to12 * (Input1.Gender == 1 ? 2 : 1)"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "credit1317",
+      "SuccessEvent": "credit1317 income tax rate applied",
+      "ErrorMessage": "Error calculating credit1317 income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.KidsAge13to17 > 0 && Input1.Gender == 1",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * credit * Input1.KidsAge13to17"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "credit18",
+      "SuccessEvent": "credit18 income tax rate applied",
+      "ErrorMessage": "Error calculating credit18 income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.KidsAge18 > 0 && Input1.Gender == 1",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * 0.5 * credit * Input1.KidsAge18"
+          }
+        }
+      }
+    }
+
+   
+  ]
+}

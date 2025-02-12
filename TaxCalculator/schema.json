@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "App Settings",
+  "description": "Schema for App Settings",
+  "type": "object",
+  "properties": {
+    "AppSettings": {
+      "type": "object",
+      "properties": {
+        "AppEnvironment": {
+          "type": "string",
+          "description": "Environment of the App",
+          "enum": [ "Internet", "Intranet", "Console", "Myzg" ]
+        },
+        "ProjectName": {
+          "type": "string",
+          "description": "Name of the Project"
+        },
+        "IsProduction": {
+          "type": "boolean",
+          "description": "Is Production Environment"
+        },
+        "SwaggerSchemaVersion": {
+          "type": "integer",
+          "description": "Swagger schema version",
+          "enum": [ 2, 3 ]
+        }
+      },
+      "required": [ "AppEnvironment", "ProjectName", "IsProduction", "SwaggerSchemaVersion" ]
+    }
+  }
+}

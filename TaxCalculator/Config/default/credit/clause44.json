@@ -1,0 +1,62 @@
+{
+  "WorkflowName": "clause44",
+  "GlobalParams": [
+    {
+      "Name": "dependency_1",
+      "Expression": "45"
+    },
+    {
+      "Name": "IsraeliResident",
+      "Expression": "Input1.israeliResident"
+    },
+    {
+      "Name": "amountPaidForCare",
+      "Expression": "Input1.amountPaidForCare"
+    },
+    {
+      "Name": "taxableIncome",
+      "Expression": "Input1.personalExertionIncome + Input1.taxableIncomeNotFromPersonalExertion"
+    }
+  ],
+  "Rules": [
+    {
+
+      "RuleName": "WorkflowEntryCondition",
+      "SuccessEvent": "Is individual",
+      "ErrorMessage": "Error determining if individual",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.individual == true",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "true"
+          }
+        },
+        "OnFailure": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "false"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "Tax credit for care in a special institution",
+      "SuccessEvent": "Calculation Successful",
+      "ErrorMessage": "Error in rule evaluation",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "IsraeliResident  && amountPaidForCare > (0.125 * taxableIncome)",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": " -1 * ((amountPaidForCare - (0.125 * taxableIncome)) * 0.35)"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "WorkflowName": "isrealCitizen",
+
+  "Rules": [
+    {
+      "RuleName": "isrealCitizen",
+      "SuccessEvent": "doctorate income tax rate applied",
+      "ErrorMessage": "Error calculating doctorate income tax",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.Citizen == true",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * 2.25 * 2820"
+          }
+        }
+      }
+    }
+  ]
+}

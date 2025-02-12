@@ -1,0 +1,170 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "TaxCalculator",
+    "description": "",
+    "version": "v1"
+  },
+  "host": "localhost:7166",
+  "basePath": "/TaxCalculator",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/v1/TaxCalculator/api/calcTax": {
+      "post": {
+        "tags": [
+          "TaxCalculatorEndpoint"
+        ],
+        "operationId": "CalcTax",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CalcTaxRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/v1/TaxCalculator/api/reloadWorkflows": {
+      "get": {
+        "tags": [
+          "TaxCalculatorEndpoint"
+        ],
+        "operationId": "ReloadWorkflows",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/v1/health": {
+      "get": {
+        "tags": [
+          "HealthChecks"
+        ],
+        "summary": "Health Check",
+        "description": "Checks the health of the application",
+        "responses": {
+          "200": {
+            "description": "Healthy"
+          },
+          "503": {
+            "description": "Unhealthy"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CalcTaxRequest": {
+      "required": [
+        "year"
+      ],
+      "type": "object",
+      "properties": {
+        "year": {
+          "format": "int32",
+          "minimum": 2020,
+          "exclusiveMinimum": true,
+          "type": "integer"
+        },
+        "individual": {
+          "type": "boolean"
+        },
+        "properAccountingBooks": {
+          "type": "boolean"
+        },
+        "individualAge": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "isWoman": {
+          "type": "boolean"
+        },
+        "taxableIncomeNotFromPersonalExertion": {
+          "format": "double",
+          "type": "number"
+        },
+        "personalExertionIncome": {
+          "format": "double",
+          "type": "number"
+        },
+        "israeliResident": {
+          "type": "boolean"
+        },
+        "donationAmount": {
+          "format": "double",
+          "type": "number"
+        },
+        "lifeInsurence": {
+          "format": "double",
+          "type": "number"
+        },
+        "pensionInsuranceEmployedDeposit": {
+          "format": "double",
+          "type": "number"
+        },
+        "pensionInsuranceFromEmployerDeposit": {
+          "format": "double",
+          "type": "number"
+        },
+        "pensionInsuranceSelfEmployedDeposit": {
+          "format": "double",
+          "type": "number"
+        },
+        "survivorPensionInsurance": {
+          "format": "double",
+          "type": "number"
+        },
+        "insuredIncome": {
+          "format": "double",
+          "type": "number"
+        },
+        "wrdInsuranceEmployedDeposit": {
+          "format": "double",
+          "type": "number"
+        },
+        "wrdInsuranceSelfEmployedDeposit": {
+          "format": "double",
+          "type": "number"
+        },
+        "regularServiceMonths": {
+          "format": "double",
+          "type": "number"
+        },
+        "endOfMilitaryServiceDate": {
+          "type": "string"
+        },
+        "amountPaidForCare": {
+          "format": "double",
+          "type": "number"
+        },
+        "numberOfChildrenWithDisabilities": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "childrensData": {
+          "type": "string"
+        },
+        "corporateTaxableIncome": {
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "WorkflowName": "educationFund",
+  "Rules": [
+    {
+      "RuleName": "educationFund",
+      "SuccessEvent": "educationFund success",
+      "ErrorMessage": "Error calculating educationFund",
+      "ErrorType": "Error",
+      "RuleExpressionType": "LambdaExpression",
+      "Expression": "Input1.educationFundSum > 0",
+      "Actions": {
+        "OnSuccess": {
+          "Name": "OutputExpression",
+          "Context": {
+            "Expression": "-1 * Math.Min(0.075 * Input1.educationFundSum, 14140.8)"
+          }
+        }
+      }
+    }
+  ]
+}
