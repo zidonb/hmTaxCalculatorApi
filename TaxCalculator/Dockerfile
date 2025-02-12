@@ -6,7 +6,7 @@ EXPOSE 8080
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["TaxCalculator/TaxCalculator.csproj", "TaxCalculator/"]
+COPY ["TaxCalculator.csproj", "TaxCalculator/"]
 RUN dotnet restore "TaxCalculator/TaxCalculator.csproj"
 COPY . .
 WORKDIR "/src/TaxCalculator"
