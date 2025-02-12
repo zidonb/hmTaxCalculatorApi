@@ -12,14 +12,14 @@ public class TaxCalculatorEndpoint  {
         var group = app.MapGroup(TAX_CALCULATOR);
 
         group.MapPost("/api/calcTax", CalcTax)
-            .AddEndpointFilter<ValidationFilter<CalcTaxRequest>>()
+            
             .WithName(nameof(CalcTax));
 
         group.MapGet("/api/reloadWorkflows", ReloadWorkflows)
             .WithName(nameof(ReloadWorkflows));
     }
 
-    public async Task<IResult> CalcTax(CalcTaxRequest workFlowInputParams, IWorkFlowsService taxCalculator) {
+    public static async Task<IResult> CalcTax(CalcTaxRequest workFlowInputParams, IWorkFlowsService taxCalculator) {
         var res = await taxCalculator.CalculateTaxAsync(workFlowInputParams);
         return Results.Ok(res);
     }

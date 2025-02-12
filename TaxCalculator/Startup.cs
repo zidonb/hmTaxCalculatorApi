@@ -59,16 +59,7 @@ public static class Startup {
         // Add Auto Mapper
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-        // Add swagger
-        services.AddShaamSwaggerGen(options => {
-            options.SwaggerDoc($"v{appSettings.ApiVersion}",
-                new OpenApiInfo
-                {
-                    Title = appSettings.ProjectName,
-                    Version = $"v{appSettings.ApiVersion}",
-                    Description = "",
-                });
-        });
+
 
 
         // Register validations

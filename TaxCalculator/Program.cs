@@ -1,28 +1,30 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using TaxCalculator.Presentation.Endpoints;
 
-builder.AddServiceDefaults();
+var builder = WebApplication.CreateBuilder(args);
 
-// Add configurations
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddConfigureSettings();
-// Add external services to the container
 builder.Services.AddExternalServices();
-// Add services to the container
 builder.Services.AddAppServices();
+
 
 var app = builder.Build();
 
-app.UseShaamSwaggerUI(builder, (options) => { });
+app.UseSwagger();
+app.UseSwaggerUI();
 
-//app.UseHttpsRedirection();
+// Your existing API group
+var taxCalculatorGroup = app.MapGroup("/api");
 
-// Dynamic - Will register ExceptionsEndpoint and everything that implements IEndpointModule
-var group = app.RegisterEndPoints();
+// POST: /api/calcTax
+taxCalculatorGroup.MapPost("/calcTax", async (CalcTaxRequest workFlowInputParams, IWorkFlowsService taxCalculator) => await TaxCalculatorEndpoint.CalcTax(workFlowInputParams, taxCalculator))
+    .WithName("CalcTax");
 
-group.MapDefaultEndpoints();
+// GET: /api/reloadWorkflows
+taxCalculatorGroup.MapGet("/reloadWorkflows", () => Results.StatusCode(501))
+    .WithName("ReloadWorkflows");
 
-app.AddHeaders();
-
-// Use middleware
-app.UseMiddleware();
-
+    
 app.Run();
+
