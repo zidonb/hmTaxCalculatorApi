@@ -9,9 +9,12 @@ public class WorkFlowsLoader : IHostedService {
     private readonly RuleEnginePerYearFactory _ruleEnginePerYearFactory;
     private readonly IConfiguration _configurationApp;
 
-    public WorkFlowsLoader(RuleEnginePerYearFactory ruleEnginePerYearFactory, IConfiguration configuration) {
+    private static ILogger<WorkFlowsLoader> _logger;
+
+    public WorkFlowsLoader(RuleEnginePerYearFactory ruleEnginePerYearFactory, IConfiguration configuration, ILogger<WorkFlowsLoader> logger) {
         _ruleEnginePerYearFactory = ruleEnginePerYearFactory;
         _configurationApp = configuration;
+        _logger = logger;
     }
     public async Task StartAsync(CancellationToken cancellationToken) {
         // Get the directory path from configuration
@@ -27,10 +30,12 @@ public class WorkFlowsLoader : IHostedService {
     public static string GetworkflowDirectoryPath(IConfiguration configuration) {
         // בודקים אם יש ערך בקובץ קונפיג, אם יש אז לוקחים אותו, אם אין אז מנסים לחפש במקומי
         string workflowDirectoryPath = configuration.GetValue<string>("WorkflowDirectoryPath") ?? string.Empty;
-
+       
         if (string.IsNullOrEmpty(workflowDirectoryPath) || !Directory.Exists(workflowDirectoryPath)) {
+            _logger.LogInformation("Workflow directory path not found in configuration. Using default path.");
             workflowDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Constants.WORKFLOW_DIRECTORY_NAME);
         }
+         _logger.LogInformation("Workflow directory path: {0}", workflowDirectoryPath);
 
         return workflowDirectoryPath;
 

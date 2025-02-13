@@ -66,4 +66,8 @@ public class CalcTaxRequest {
 
     public double corporateTaxableIncome { get; set; }
 
+    public double rentalIncome { get; set; }
+
+    public double applicableRate{ get; set; }
+
 }
